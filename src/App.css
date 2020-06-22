@@ -36,3 +36,72 @@
     transform: rotate(360deg);
   }
 }
+
+html, body {
+  background-color: #ddd;
+
+}
+
+.center-me {
+  margin: auto;
+}
+
+/* small phone  */
+@media (max-width: 640px) {
+  .container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 5px;
+    justify-items: center;
+  }
+}
+
+/* phones */
+@media (min-width: 641px) and (max-width: 800px) {
+  .container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-gap: 5px;
+    justify-items: center;
+  }
+}
+
+/* ipad and taplets */
+@media (min-width: 801px) and (max-width: 1024px) {
+  .container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: 5px;
+    justify-items: center;
+  }
+}
+
+/* laptop or desktops */
+@media (min-width: 1025px) {
+  .container {
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    grid-gap: 5px;
+    justify-items: center;
+  }
+}
+
+.item {
+  width: 60px;
+  height: 60px;
+  margin: 5px;
+  border: none;
+  font-size: xx-large;
+  border-radius: 25px 25px 25px 33px;
+  box-shadow:1px 2px 5px 0 rgba(40, 3, 247, 0.16),0 2px 10px 0 rgba(6, 2, 255, 0.12);
+
+  /* ... */
+}
+
+.close {
+  background-color:teal;
+}
+
+.open {
+  background-color:transparent;
+}
