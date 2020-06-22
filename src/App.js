@@ -27,7 +27,7 @@ function Tile(props) {
 
   // console.log(props);
   return (
-    <button id={props.tile.id} onClick={(e) => props.onClick(e)} className={props.tile.matched ? "item" : "item"}>{(props.tile.isOpen) ? props.tile.mask : props.tile.emoji}</button>
+    <button id={props.tile.id} onClick={(e) => props.onClick(e)} className={props.tile.matched ? "item" : "item"}>{(props.tile.isOpen) ? props.tile.emoji : props.tile.mask}</button>
   );
 }
 
@@ -75,7 +75,7 @@ class App extends React.Component {
     else if (width > 640) tileCount = 5 * 6;
     else tileCount = 20;
     console.log("new tile count", tileCount);
-    return tileCount % 2 === 0? tileCount : tileCount + 1;
+    return tileCount % 2 === 0 ? tileCount : tileCount + 1;
   }
 
   buildTileData() {
@@ -178,22 +178,22 @@ class App extends React.Component {
     window.addEventListener('resize', () => {
       console.log("window resize");
       this.buildTileData();
-     });
-    window.addEventListener('load',() => {
+    });
+    window.addEventListener('load', () => {
       console.log("window resize");
       this.buildTileData();
-     });
+    });
 
   }
   componentWillUnmount() {
     window.removeEventListener('resize', () => {
       console.log("window resize");
       this.buildTileData();
-     });
+    });
     window.addEventListener('load', () => {
       console.log("window resize");
       this.buildTileData();
-     });
+    });
   }
 
   render() {
