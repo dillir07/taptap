@@ -27,7 +27,7 @@ function Tile(props) {
 
   // console.log(props);
   return (
-    <button id={props.tile.id} onClick={(e) => props.onClick(e)} className={props.tile.matched ? "item" : "item"}>{(props.tile.isOpen) ? props.tile.emoji : props.tile.mask}</button>
+    <button id={props.tile.id} onClick={(e) => props.onClick(e)} className={props.tile.matched ? "item" : "item"}>{(props.tile.isOpen) ? props.tile.mask : props.tile.emoji}</button>
   );
 }
 
@@ -62,8 +62,8 @@ class App extends React.Component {
       clickCounter: 0,
       matchCounter: 0,
       tiles: [],
-      timerHanlde: undefined,
-      maxTileNumber: 5,
+      timerHandle: undefined,
+      maxTileNumber: 2,
     }
   }
 
@@ -124,10 +124,15 @@ class App extends React.Component {
   //   return tileCount % 2 === 0 ? tileCount : tileCount + 1;
   // }
 
+  /**
+   * builds tile data and adds to state
+   */
   buildTileData() {
 
     let length = this.state.maxTileNumber;
+    let singleSetLength = Math.floor(length / 2);
 
+    // debugger;
     const tiles = [];
     const mask = "😜";
     const clown = "🤡";
@@ -137,8 +142,12 @@ class App extends React.Component {
     🧙‍♀️,🧚‍♀️,🧞‍♀️,🐘,🐰,🐻,🐨,🐧,🕊️,🦢,🦜,🐢,🦈,🐝,🐞,🌊,☃️,🌜,🍀,🦀,🌻,
     💌,🧭,⌛,⛱️,🧨,🎀,🎁,🪁,🧸,🔋,🔑,🔒,🔫,🧲,🛒,🧛‍♀️,👩‍🍳,🤗,👽,🥺
     `.split(",");
-    const emojis1 = baseEmojis.splice(0, length / 2);
-    const emojis2 = emojis1.slice();
+    let emojis1 = [];
+    let emojis2 = [];
+    let randomStart = Math.floor(Math.random() * baseEmojis.length);
+    emojis1 = ((baseEmojis.length - randomStart) >= singleSetLength) ? baseEmojis.slice(randomStart) : baseEmojis.slice(randomStart - singleSetLength);
+    emojis1 = emojis1.slice(0, singleSetLength);
+    emojis2 = emojis1.slice(); // take a copy
 
     for (var index = 0; index < length; index++) {
       let randomNumberToPop = emojis1.length !== 0 ? getRandomNumber(0, emojis1.length) : getRandomNumber(0, emojis2.length);
@@ -170,9 +179,13 @@ class App extends React.Component {
         updatedTiles[this.state.click2TileId].matched = true;
         console.log("tile matched");
         this.setState({ click1TileId: -1, click2TileId: -1, matchCounter: this.state.matchCounter + 1 }, () => {
-          if (this.state.matchCounter === Math.floor(this.state.matchCounter / 2)) {
-            console.log(" all match timer stopped");
-            window.clearInterval(this.state.timerHanlde);
+          console.log("checking match", this.state.matchCounter, Math.floor(this.state.maxTileNumber / 2), this.state.timerHandle);
+          if (this.state.matchCounter === Math.floor(this.state.maxTileNumber / 2)) {
+            console.log("match stopped;", this.state.matchCounter, Math.floor(this.state.maxTileNumber / 2), this.state.timerHandle);
+            console.log("clearning interval", this.state.timerHandle);
+            document.getElementById("result").innerHTML = `<span>🎉🎉🎉Congratulations🎉🎉🎉<br>👏You've completed👏</span>
+            <br><button id="btnReplay" onclick="window.location.reload()">Replay</button>`;
+            window.clearInterval(this.state.timerHandle);
           }
         });
       }
@@ -201,6 +214,10 @@ class App extends React.Component {
     });
   }
 
+  /**
+   * 
+   * @param {HTMLID} elmentId - HTML Id of the element to be used as counter/timer
+   */
   initTimer(elmentId) {
     const el = document.getElementById(elmentId);
     // console.log("int ", el);
@@ -208,7 +225,7 @@ class App extends React.Component {
       el.innerText = el.innerText === "" ? 0 : parseInt(el.innerText) + 1;
       // console.log("timer inc", el.innerText);
     }, 1000);
-    this.setState({ timerHandle: timerHandle }, () => console.log("timer handle is set"));
+    this.setState({ timerHandle: timerHandle }, () => console.log("timer handle is set", timerHandle, this.state.timerHandle));
   }
 
   handleClick(event) {
@@ -221,7 +238,7 @@ class App extends React.Component {
 
     this.setState({ clickCounter: this.state.clickCounter + 1 }, () => {
       if (this.state.clickCounter === 1) {
-        this.initTimer("timer-container");
+        this.initTimer("timer");
         console.log("timer started");
       }
       console.log("******************************************************");
@@ -270,11 +287,14 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <header id="header">Taptap</header>
+        <header id="header">Find matches</header>
         <Board className={"center-me"} tiles={this.state.tiles} onClick={(x) => this.handleClick(x)} ></Board>
-        <p id="clicks-container">clicks: {this.state.clickCounter}</p>
-        <p id="matches-container">matches: {this.state.matchCounter}</p>
-        <p id="timer">Timer: <span id="timer-container"></span></p>
+        <div id="info-container">
+          <p id="clicks-container"> Clicks: <span id="clicks">{this.state.clickCounter}</span></p>
+          <p id="matches-container"> Matches: <span id="matches">{this.state.matchCounter}</span></p>
+          <p id="timer-container">Timer: <span id="timer">0</span></p>
+          <p id="result-container"><span id="result"></span></p>
+        </div>
       </div>
     );
   }
