@@ -56,36 +56,84 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "dilli",
+      name: "taptap by Dilli",
       click1TileId: -1,
       click2TileId: -1,
       clickCounter: 0,
-      maxTileCount: 40,
+      matchCounter: 0,
       tiles: [],
+      timerHanlde: undefined,
+      maxTileNumber: 5,
     }
   }
 
-  calculateTileCount() {
-    console.log("calulating tile count");
-    const width = window.innerWidth;
+  // calculateTileCount() {
+  //   console.log("calulating tile count");
+  //   const width = window.innerWidth;
+  //   const height = window.innerHeight;
 
-    if (width > 1025) tileCount = 15 * 8;
-    else if (width > 801 && width < 1024) tileCount = 12 * 7;
-    else if (width > 641 && width < 800) tileCount = 10 * 6;
-    else if (width > 640) tileCount = 5 * 6;
-    else tileCount = 20;
-    console.log("new tile count", tileCount);
-    return tileCount % 2 === 0 ? tileCount : tileCount + 1;
-  }
+  //   let rows = 5;
+
+  //   if (height > 900) {
+  //     console.log(height, "desktop h");
+  //     rows = 12;
+  //   }
+  //   else if (height > 801 && height <= 899) {
+  //     console.log(height, "tablets h");
+  //     rows = 10;
+  //   }
+  //   else if (height > 641 && height <= 800) {
+  //     console.log(height, "ipad h");
+  //     rows = 8;
+  //   }
+  //   else if (height > 481 && height <= 640) {
+  //     console.log(height, "phone h");
+  //     rows = 8;
+  //   }
+  //   else if (height > 320 && height <= 480) {
+  //     console.log(height, "phone h");
+  //     rows = 6;
+  //   }
+  //   else {
+  //     console.log(height, "unknown phone h")
+  //     rows = 5;
+  //   }
+
+
+  //   if (width > 1025) {
+  //     console.log(width, "desktop w");
+  //     tileCount = 15 * rows;
+  //   }
+  //   else if (width > 801 && width <= 1024) {
+  //     console.log(width, "tablets w");
+  //     tileCount = 12 * rows;
+  //   }
+  //   else if (width > 641 && width <= 800) {
+  //     console.log(width, "ipad w");
+  //     tileCount = 10 * rows;
+  //   }
+  //   else if (width > 320 && width <= 640) {
+  //     console.log(width, "phone w");
+  //     tileCount = 5 * rows;
+  //   }
+  //   else {
+  //     console.log(width, "unknown phone w")
+  //     tileCount = 5 * rows;
+  //   }
+  //   console.log("new tile count", tileCount);
+  //   return tileCount % 2 === 0 ? tileCount : tileCount + 1;
+  // }
 
   buildTileData() {
-    let length = this.calculateTileCount();
-    console.log("build tile data", length);
+
+    let length = this.state.maxTileNumber;
+
     const tiles = [];
     const mask = "😜";
+    const clown = "🤡";
     const baseEmojis = `
     🔥,🙈,❤️,🐶,🦊,🦁,🦚,🦩,💣,🎈,💎,☎️,🗿,🍉,🍋,🍎,🥭,🍕,🍟,🎂,🐬,
-    🦋,🌷,🍁,🌞,🌈,🏝️,⚽,🎭,😍,🤠,🤡,👻,👸,🧙,🧞,🦄,🍫,🍭,💐,🌊,
+    🦋,🌷,🍁,🌞,🌈,🏝️,⚽,🎭,😍,🤠,👻,👸,🧙,🧞,🦄,🍫,🍭,💐,🌊,
     🧙‍♀️,🧚‍♀️,🧞‍♀️,🐘,🐰,🐻,🐨,🐧,🕊️,🦢,🦜,🐢,🦈,🐝,🐞,🌊,☃️,🌜,🍀,🦀,🌻,
     💌,🧭,⌛,⛱️,🧨,🎀,🎁,🪁,🧸,🔋,🔑,🔒,🔫,🧲,🛒,🧛‍♀️,👩‍🍳,🤗,👽,🥺
     `.split(",");
@@ -97,13 +145,18 @@ class App extends React.Component {
       let emojiToPlace = emojis1.length !== 0 ? emojis1[randomNumberToPop] : emojis2[randomNumberToPop];
       // since we can't pop element at index, we are splicing element at index
       emojis1.length !== 0 ? emojis1.splice(randomNumberToPop, 1) : emojis2.splice(randomNumberToPop, 1);
-      tiles.push(new TileData(index, emojiToPlace, mask));
+      tiles.push(new TileData(index, emojiToPlace === undefined ? clown : emojiToPlace, mask));
     }
 
     // console.log("");
     this.setState({ tiles: tiles }, () => console.log("tiles are built by builder"));
   }
 
+  /**
+   * Matches current tile and previous open tile
+   * @param {*} tileId - current open time id
+   * @param {*} clickEventId - click counter till now
+   */
   matchTiles(tileId, clickEventId) {
     console.log("made copy of tiles");
     var updatedTiles = this.state.tiles.slice();
@@ -116,7 +169,12 @@ class App extends React.Component {
         updatedTiles[this.state.click1TileId].matched = true;
         updatedTiles[this.state.click2TileId].matched = true;
         console.log("tile matched");
-        this.setState({ click1TileId: -1, click2TileId: -1 }, () => console.log("matched tiles closed"));
+        this.setState({ click1TileId: -1, click2TileId: -1, matchCounter: this.state.matchCounter + 1 }, () => {
+          if (this.state.matchCounter === Math.floor(this.state.matchCounter / 2)) {
+            console.log(" all match timer stopped");
+            window.clearInterval(this.state.timerHanlde);
+          }
+        });
       }
       else {
         console.log("tile not matched");
@@ -143,6 +201,16 @@ class App extends React.Component {
     });
   }
 
+  initTimer(elmentId) {
+    const el = document.getElementById(elmentId);
+    // console.log("int ", el);
+    let timerHandle = window.setInterval(function () {
+      el.innerText = el.innerText === "" ? 0 : parseInt(el.innerText) + 1;
+      // console.log("timer inc", el.innerText);
+    }, 1000);
+    this.setState({ timerHandle: timerHandle }, () => console.log("timer handle is set"));
+  }
+
   handleClick(event) {
     const tileId = event.target.id;
 
@@ -152,7 +220,10 @@ class App extends React.Component {
     }
 
     this.setState({ clickCounter: this.state.clickCounter + 1 }, () => {
-
+      if (this.state.clickCounter === 1) {
+        this.initTimer("timer-container");
+        console.log("timer started");
+      }
       console.log("******************************************************");
       console.log("for click id", this.state.clickCounter, this.state.clickCounter % 2, this.state.clickCounter % 2 === 0);
 
@@ -199,11 +270,11 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        {/* <header>click Counter: {this.state.clickCounter}</header>
-        <header>click1TileId: {this.state.click1TileId}</header>
-        <header>click2TileId: {this.state.click2TileId}</header>
-        <header>is open for Clickcount: {this.state.clickCounter % 2 === 0 ? "No" : "Yes"}</header> */}
+        <header id="header">Taptap</header>
         <Board className={"center-me"} tiles={this.state.tiles} onClick={(x) => this.handleClick(x)} ></Board>
+        <p id="clicks-container">clicks: {this.state.clickCounter}</p>
+        <p id="matches-container">matches: {this.state.matchCounter}</p>
+        <p id="timer">Timer: <span id="timer-container"></span></p>
       </div>
     );
   }

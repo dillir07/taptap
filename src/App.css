@@ -46,6 +46,50 @@ html, body {
   margin: auto;
 }
 
+/* dynamic row counts starts here
+
+
+@media (max-width: 640px) {
+  .container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 5px;
+    justify-items: center;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 800px) {
+  .container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-gap: 5px;
+    justify-items: center;
+  }
+}
+
+
+@media (min-width: 801px) and (max-width: 1024px) {
+  .container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: 5px;
+    justify-items: center;
+  }
+}
+
+
+@media (min-width: 1025px) {
+  .container {
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    grid-gap: 5px;
+    justify-items: center;
+  }
+}
+
+dynamic row counts ends here */
+
+
 /* small phone  */
 @media (max-width: 640px) {
   .container {
@@ -60,7 +104,7 @@ html, body {
 @media (min-width: 641px) and (max-width: 800px) {
   .container {
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 5px;
     justify-items: center;
   }
@@ -70,7 +114,7 @@ html, body {
 @media (min-width: 801px) and (max-width: 1024px) {
   .container {
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 5px;
     justify-items: center;
   }
@@ -80,9 +124,12 @@ html, body {
 @media (min-width: 1025px) {
   .container {
     display: grid;
-    grid-template-columns: repeat(15, 1fr);
+    grid-template-columns: repeat(5, 0fr);
     grid-gap: 5px;
     justify-items: center;
+    width: 500px;
+    align-self: center;
+    margin: auto;
   }
 }
 
@@ -94,8 +141,12 @@ html, body {
   font-size: xx-large;
   border-radius: 25px 25px 25px 33px;
   box-shadow:1px 2px 5px 0 rgba(40, 3, 247, 0.16),0 2px 10px 0 rgba(6, 2, 255, 0.12);
-
   /* ... */
+}
+
+button:active, button:focus {
+  border: none;
+  outline: none;
 }
 
 .close {
@@ -104,4 +155,45 @@ html, body {
 
 .open {
   background-color:transparent;
+}
+
+/* below is copy paste range */
+
+.slidecontainer {
+  width: 100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
 }
