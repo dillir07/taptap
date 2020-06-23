@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1ffc5cba3c48cad493492a89da3633e4",
+    "revision": "42482d3d61c7287f0aeefe29f598bad0",
     "url": "/taptap/index.html"
   },
   {
-    "revision": "ec35fb8525e2c7402a1d",
-    "url": "/taptap/static/css/main.3ca835d2.chunk.css"
+    "revision": "720b222f9c941a19fdeb",
+    "url": "/taptap/static/css/main.8d0526fc.chunk.css"
   },
   {
     "revision": "6fb1b69b56bffcfb646b",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/taptap/static/js/2.3ed59d93.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "ec35fb8525e2c7402a1d",
-    "url": "/taptap/static/js/main.c6f3cd06.chunk.js"
+    "revision": "720b222f9c941a19fdeb",
+    "url": "/taptap/static/js/main.6fc68a15.chunk.js"
   },
   {
     "revision": "918ef1a97161bef05bb3",
