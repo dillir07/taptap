@@ -3,7 +3,7 @@ import React from 'react';
 import './App.css';
 // import '../public/w3.css';
 
-let tileCount = 0;
+// let tileCount = 0;
 
 class TileData {
   id;
@@ -27,7 +27,7 @@ function Tile(props) {
 
   // console.log(props);
   return (
-    <button id={props.tile.id} onClick={(e) => props.onClick(e)} className={props.tile.matched ? "item" : "item"}>{(props.tile.isOpen) ? props.tile.mask : props.tile.emoji}</button>
+    <button id={props.tile.id} onClick={(e) => props.onClick(e)} className={props.tile.matched ? "item" : "item"}>{(props.tile.isOpen) ? props.tile.emoji : props.tile.mask}</button>
   );
 }
 
@@ -63,7 +63,7 @@ class App extends React.Component {
       matchCounter: 0,
       tiles: [],
       timerHandle: undefined,
-      maxTileNumber: 2,
+      maxTileNumber: 25,
     }
   }
 
